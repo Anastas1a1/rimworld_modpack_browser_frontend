@@ -3,18 +3,19 @@
 
         <form @submit.prevent>
             <h2>Новая сборка</h2>
-            <input v-model="card.title"
-                class="input" type="text"
+            <custom-input v-model="card.title"
                 placeholder="Название">
-            <input v-model="card.link" 
-                class="input" type="text" 
+            </custom-input>
+            <custom-input v-model="card.link" 
                 placeholder="Ссылка">
-            <input v-model="card.description" 
-                class="input" type="text" 
+            </custom-input>
+            <custom-input v-model="card.description" 
                 placeholder="Описание">
-            <input class="input" type="file" 
+            </custom-input>
+            <custom-input type="file" 
                 @change="handleImageUpload" 
                 accept="image/*">
+            </custom-input>
 
             <img v-if="card.logo" 
                 :src="card.logo" 
@@ -22,9 +23,11 @@
             <img v-else src="../assets/logo.png" 
                 width="100">
 
-            <button class="btn" 
-                @click="createCard">Создать
-            </button>
+            <custom-button
+                @click="createCard"
+                >Создать
+            </custom-button>
+
         </form>
 
     </div>
@@ -102,15 +105,7 @@ form {
     color: aliceblue
 }
 
-.input {
-  width: 100%;
-  border: 2px solid aliceblue;
-  padding: 10px 15px;
-  margin-top: 15px;
-  border-radius: 10px;
-  background-color: #8589AC;
 
-}
 
 
 .btn {

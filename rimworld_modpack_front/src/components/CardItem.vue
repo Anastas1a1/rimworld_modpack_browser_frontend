@@ -55,7 +55,6 @@ export default {
 </script>
   
 <style>
-/* Здесь вы можете добавить стили для компонента CardItem */
 .card {
     cursor: pointer;
     text-align: left;
@@ -76,20 +75,20 @@ export default {
   display: flex;
   align-items: center;
   font: 0.7em sans-serif;
+  margin-top: 10px;
 }
 
 .card__part {
     padding: 5px;
+    margin-bottom: 30px;
 }
 
-.card__btns {
-    margin-top: 10px;
-}
 
 img {
     margin-left: 10px;
     margin-right: 5px;
     cursor: pointer;
+    border-radius: 10px;
 }
 </style>
   

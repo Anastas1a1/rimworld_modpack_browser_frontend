@@ -1,7 +1,13 @@
 <template>
     <div class="cards__list">
-        <h2>Коллекции</h2>
-        <card-item class="card" v-for="card in cards" :card="card" />
+        <div v-if="cards.length > 0">
+            <h2>Коллекции</h2>
+            <card-item class="card" v-for="card in cards" :card="card" />
+        </div>
+        
+        <h4 v-else>
+            Коллекции не найдены
+        </h4>
     </div>
 </template>
 
