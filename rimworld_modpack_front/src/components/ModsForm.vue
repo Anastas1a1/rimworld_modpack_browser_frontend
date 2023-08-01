@@ -3,13 +3,13 @@
 
         <form @submit.prevent>
             <h2>Новая сборка</h2>
-            <custom-input v-model="card.title"
+            <custom-input v-model="card.name"
                 placeholder="Название">
             </custom-input>
             <custom-input v-model="card.link" 
                 placeholder="Ссылка">
             </custom-input>
-            <custom-input v-model="card.description" 
+            <custom-input v-model="card.short_description" 
                 placeholder="Описание">
             </custom-input>
             <custom-input type="file" 
@@ -41,9 +41,9 @@ export default {
   data() {
     return {
       card: {
-        title: '',
+        name: '',
         link: '',
-        description: '',
+        short_description: '',
         logo: null 
       }
     };
@@ -54,9 +54,9 @@ export default {
             this.card.id = Date.now(),
             this.$emit('create', this.card);
             this.card = {
-                title: '',
+                name: '',
                 link: '',
-                description: '',
+                short_description: '',
                 logo: null,               
             }
         },
@@ -106,21 +106,4 @@ form {
 }
 
 
-
-
-.btn {
-  margin-top: 15px;
-  align-self: flex-end;
-  padding: 10px 15px;
-  background: aliceblue;
-  color: #35656F;
-  border: 2px solid aliceblue;
-  border-radius: 10px;
-}
-
-.btn:hover {
-    background-color: #6C80EF;
-    color: aliceblue;
-
-}
 </style>

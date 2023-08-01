@@ -7,9 +7,9 @@
         </div>
 
         <div class="card__part">
-            <div><strong>Название</strong> {{ card.name || 'Нет названия' }}</div>
+            <div><strong>Название</strong> {{ card.title || 'Нет названия' }}</div>
             <div><strong>Ссылка</strong> {{ card.link || 'Нет ссылки' }}</div>
-            <div><strong>Описание</strong> {{ card.short_description || '' }}</div>
+            <div><strong>Описание</strong> {{ card.description || '' }}</div>
         </div>
 
         <div class="card__btns">
@@ -22,6 +22,7 @@
 </template>
   
 <script>
+
 export default {
     props: {
         card: {
@@ -37,17 +38,13 @@ export default {
     methods: {
         toggleLike() {
             if (this.isLiked) {
-                // Если уже лайкнуто, отменяем лайк
                 this.card.likes = Math.max((this.card.likes || 0) - 1, 0);
             } else {
-                // Если не лайкнуто, добавляем лайк
                 this.card.likes = (this.card.likes || 0) + 1;
             }
-            this.isLiked = !this.isLiked; // Переключаем флаг
+            this.isLiked = !this.isLiked; 
         },
         handleViews() {
-            // Здесь обработчик для просмотра карточки
-            // Увеличиваем значение просмотров в объекте card
             this.card.views = (this.card.views || 0) + 1;
         }
     }

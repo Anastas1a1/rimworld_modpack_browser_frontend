@@ -1,13 +1,10 @@
 <template>
     <div class="mods">
-        <custom-button
-            @click="showDialog"
-            >Новая коллекция
-        </custom-button>
-        <dialog-window v-model:show="dialogVisible">
 
-            <mods-form @create="createCard" />
-        </dialog-window>
+        <!-- <dialog-window v-model:show="dialogVisible"> -->
+
+        <mods-form @create="createCard" />
+        <!-- </dialog-window> -->
         <mods-list :cards="cards" />
 
     </div>
@@ -15,9 +12,9 @@
 
 <script>
 
-import ModsList from "@/components/ModsList"
-import ModsForm from "@/components/ModsForm"
-
+import ModsList from "@/components/ModsList";
+import ModsForm from "@/components/ModsForm";
+import axios from 'axios';
 
 export default {
     components: {
@@ -27,9 +24,9 @@ export default {
     data() {
         return {
             cards: [
-                { id: 1, title: 'hotel1', link: 'https://..1', logo: "../assets/logo.png" },
-                { id: 2, title: 'hotel2', link: 'https://..2', logo: '../assets/logo.png' },
-                { id: 3, title: 'hotel3', link: 'https://..3', logo: '../assets/logo.png' },
+                // { id: 1, name: 'hotel1', link: 'https://..1', logo: "@/assets/logo.png", views: 50, likes: 33},
+                // { id: 2, name: 'hotel2', link: 'https://..2', logo: '../assets/logo.png' },
+                // { id: 3, name: 'hotel3', link: 'https://..3', logo: '../assets/logo.png' },
             ],
             dialogVisible: false,
         }
@@ -39,9 +36,21 @@ export default {
             this.cards.push(card);
             this.dialogVisible = false;
         },
-        showDialog() {
-            this.dialogVisible = true;
-        }
+        async fetchCards() {
+            try {
+                const response = await axios.get('https://mocki.io/v1/e4b2d9ca-890c-4fcf-9b2b-fdafd2c78754');
+                this.cards = response.data.items;
+                console.log(response);
+
+            } catch (e) {
+                alert('Ошибка')
+            }
+
+        },
+    },
+    mounted() {
+        this.fetchCards();
+
     }
 }
 </script>
