@@ -1,11 +1,13 @@
 <template>
     <div class="mods">
-
-        <!-- <dialog-window v-model:show="dialogVisible"> -->
-
+        <custom-input v-model="searchQuery" placeholder="Поиск..."></custom-input>
+        <img :src="require('@/assets/search_icon.png')">
         <mods-form @create="createCard" />
-        <!-- </dialog-window> -->
-        <mods-list :cards="cards" />
+        <mods-list :cards="sortedAndSearchedCards" v-if="!isCardsLoading" />
+
+
+        <div v-else>Идет загрузка...</div>
+        <div v-intersection="loadMoreCards" class="observer"></div>
 
     </div>
 </template>
@@ -23,12 +25,13 @@ export default {
 
     data() {
         return {
-            cards: [
-                // { id: 1, name: 'hotel1', link: 'https://..1', logo: "@/assets/logo.png", views: 50, likes: 33},
-                // { id: 2, name: 'hotel2', link: 'https://..2', logo: '../assets/logo.png' },
-                // { id: 3, name: 'hotel3', link: 'https://..3', logo: '../assets/logo.png' },
-            ],
+            cards: [],
             dialogVisible: false,
+            isCardsLoading: false,
+            searchQuery: '',
+            totalPages: 0,
+            page: 3,
+            limit: 5,
         }
     },
     methods: {
@@ -38,20 +41,48 @@ export default {
         },
         async fetchCards() {
             try {
-                const response = await axios.get('https://mocki.io/v1/e4b2d9ca-890c-4fcf-9b2b-fdafd2c78754');
+                this.isCardsLoading = true;
+                const response = await axios.get('https://mocki.io/v1/f6eee0f2-c99f-4568-b7cd-cc47cfd56b01', {
+                    params: {
+                        _page: this.page,
+                        _limit: this.limit
+                    }
+                });
+                this.totalPages = Math.ceil(response.headers['x-total-count'] / this.limit)
                 this.cards = response.data.items;
-                console.log(response);
 
             } catch (e) {
                 alert('Ошибка')
+            } finally {
+                this.isCardsLoading = false;
             }
-
         },
+        async loadMoreCards() {
+            try {
+                this.page += 1;
+                const response = await axios.get('https://mocki.io/v1/f6eee0f2-c99f-4568-b7cd-cc47cfd56b01', {
+                    params: {
+                        _page: this.page,
+                        _limit: this.limit
+                    }
+                });
+                this.totalPages = Math.ceil(response.headers['x-total-count'] / this.limit)
+                this.posts = [...this.posts, ...response.data];
+            } catch (e) {
+                alert('Ошибка')
+            }
+        }
+
     },
     mounted() {
         this.fetchCards();
 
-    }
+    },
+    computed: {
+        sortedAndSearchedCards() {
+            return this.cards.filter(card => card.name.toLowerCase().includes(this.searchQuery.toLowerCase()))
+        }
+    },
 }
 </script>
 

@@ -1,19 +1,26 @@
 <template>
     <div class="card" @click.self="handleViews">
+        
+        
         <div class="card__part">
+
             <div v-if="card.logo">
-                <img :src="card.logo || '@/assets/logo.png'" width="100">
+                <img :src="card.logo" 
+                @click.self="handleViews"
+                @error="handleImageError" width="100">
             </div>
+
         </div>
 
         <div class="card__part">
-            <div><strong>Название</strong> {{ card.name || 'Нет названия' }}</div>
+            <div><strong @click.self="handleViews">{{ card.name || 'Нет названия' }}</strong></div>
+            <!-- <div> {{ card.id || 'Не найден' }}</div> -->
             <div><strong>Ссылка</strong> {{ card.link || 'Нет ссылки' }}</div>
             <div><strong>Описание</strong> {{ card.short_description || '' }}</div>
         </div>
 
         <div class="card__btns">
-            <div><strong>Просмотры  </strong> {{ card.views || 0 }}</div>
+            <div><strong>Просмотры </strong> {{ card.views || 0 }}</div>
             <img :src="isLiked ? require('@/assets/like_pressed.png') : require('@/assets/like.png')" @click="toggleLike"
                 :class="{ liked: isLiked }">
             {{ card.likes || 0 }}
@@ -37,18 +44,17 @@ export default {
     methods: {
         toggleLike() {
             if (this.isLiked) {
-                // Если уже лайкнуто, отменяем лайк
                 this.card.likes = Math.max((this.card.likes || 0) - 1, 0);
             } else {
-                // Если не лайкнуто, добавляем лайк
                 this.card.likes = (this.card.likes || 0) + 1;
             }
-            this.isLiked = !this.isLiked; // Переключаем флаг
+            this.isLiked = !this.isLiked;
         },
         handleViews() {
-            // Здесь обработчик для просмотра карточки
-            // Увеличиваем значение просмотров в объекте card
             this.card.views = (this.card.views || 0) + 1;
+        },
+        handleImageError(event) {
+            event.target.src = require('@/assets/logo.png');
         }
     }
 }
@@ -68,14 +74,14 @@ export default {
 }
 
 .card__btns {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  margin: 10px;
-  display: flex;
-  align-items: center;
-  font: 0.7em sans-serif;
-  margin-top: 10px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 10px;
+    display: flex;
+    align-items: center;
+    font: 0.7em sans-serif;
+    margin-top: 10px;
 }
 
 .card__part {
